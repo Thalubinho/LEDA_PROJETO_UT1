@@ -20,7 +20,7 @@ public class CSVReader {
  				String date = csvRecord.get(2);                // Release Date is a index 2 column  
  				date = date.replace(' ', '/').replace(",",""); // Formating date
  				String[] dateFormated = date.split(date);
-				System.out.println("line: "+ lines + " " + id + " " + name + " :" + date);
+				System.out.println("line: "+ lines + " id: " + id + " name: " + name + " date: " + date);
 			}
 			
 			
