@@ -4,10 +4,12 @@ import java.io.BufferedWriter;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVFormat.Builder;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
@@ -22,16 +24,20 @@ public class Transformations {
 		CSVWriter transformedGamesCSV = new CSVWriter("games_formated_release_data.csv");
 		
 		try(Reader reader = Files.newBufferedReader(Paths.get(gamesCSV.getPath()));
-			CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT);
+			CSVParser csvParser = CSVFormat.Builder.create()
+                       			  .setHeader()				 // The first line is set as Header
+                       			  .build()
+                       			  .parse(reader);
 					
 			BufferedWriter writer = Files.newBufferedWriter(Paths.get(transformedGamesCSV.getPath()));
-			CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT)) {
+			CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.Builder.create()
+                    					.setHeader(csvParser.getHeaderMap().keySet().toArray(new String[0]))
+                    					.build())) {
 			
-
-			
-			int lines = 0;
-			for(CSVRecord record: csvParser) { // Each record is one line
-				lines++;
+			int line = 0;
+			for(CSVRecord record: csvParser) { // Each record is one line 
+				//for(int count = 0; count<999_999_999; count++) {}
+				
 				String id = record.get(0);     // Each column is a .get(index)
 				String name = record.get(1);	 				
  				String date = record.get(2);  
@@ -41,7 +47,23 @@ public class Transformations {
  				String[] dateFormated = date.split("/");
  				date = convertArrayToString(formatDate(dateFormated));
  				
- 				System.out.println("line: "+ lines + " id: " + id + " name: " + name + " date: " + date);
+ 				//Cloning "games.csv" and changing "Release Date"
+ 				int numColumns = record.size();
+ 				String[] row = new String[numColumns];
+ 				
+ 				for(int column = 0; column < numColumns; column++) {
+ 					if(column == 2) { // "Release Date" column
+ 						row[column] = date;
+ 					} else {
+ 						row[column] = record.get(column);
+ 					}
+ 				}
+ 				
+ 				// Creating "games_formated_release_data.csv"
+ 				csvPrinter.printRecord((Object[]) row);
+ 				System.out.println(Arrays.toString(row));
+ 				//System.out.println("line: "+ line + "| id: " + id + "| name: " + name + "| date: " + row[2]);
+ 				line++;
 			}
 			
 		} catch (Exception e) {
