@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVFormat.Builder;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
@@ -34,14 +33,11 @@ public class Transformations {
                     					.setHeader(csvParser.getHeaderMap().keySet().toArray(new String[0]))
                     					.build())) {
 			
-			int line = 0;
 			for(CSVRecord record: csvParser) { // Each record is one line 
 				//for(int count = 0; count<999_999_999; count++) {}
 				
-				String id = record.get(0);     // Each column is a .get(index)
-				String name = record.get(1);	 				
- 				String date = record.get(2);  
- 				
+				String date = record.get(2);  // Each column is a .get(index)
+				 				
  				// Formating "Release Date"
  				date = date.replace(' ', '/').replace(",",""); 
  				String[] dateFormated = date.split("/");
@@ -63,7 +59,6 @@ public class Transformations {
  				csvPrinter.printRecord((Object[]) row);
  				System.out.println(Arrays.toString(row));
  				//System.out.println("line: "+ line + "| id: " + id + "| name: " + name + "| date: " + row[2]);
- 				line++;
 			}
 			
 		} catch (Exception e) {
