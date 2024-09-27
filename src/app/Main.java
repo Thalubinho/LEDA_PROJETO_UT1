@@ -23,5 +23,6 @@ public class Main {
 		}
 		
 		Transformations.transformation1();
+		Transformations.filtrationLinux();
 	}
 }
