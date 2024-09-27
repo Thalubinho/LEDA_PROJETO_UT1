@@ -46,5 +46,7 @@ public class Main {
 //
 //		System.out.printf("Duration: %.4f ms%n" + "Consumed Memory: %.4f mb%n", durationTime, consumedMemory);
 
+		Transformations.filtrationLinux();
+
 	}
 }
