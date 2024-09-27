@@ -1,6 +1,7 @@
 package app;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -34,9 +35,7 @@ public class Transformations {
                     					.setHeader(csvParser.getHeaderMap().keySet().toArray(new String[0]))
                     					.build())) {
 			
-			for(CSVRecord record: csvParser) { // Each record is one line 
-				//for(int count = 0; count<999_999_999; count++) {}
-				
+			for(CSVRecord record: csvParser) { // Each record is one line
 				String date = record.get(2);  // Each column is a .get(index)
 				 				
  				// Formating "Release Date"
@@ -59,49 +58,9 @@ public class Transformations {
  				
  				// Creating "games_formated_release_data.csv"
  				csvPrinter.printRecord((Object[]) row);
- 				System.out.println(Arrays.toString(row));			}
-
-		CSVWriter transformedGamesCSV = new CSVWriter("games_formated_release_data.csv");
-
-		try (Reader reader = Files.newBufferedReader(Paths.get(gamesCSV.getPath()));
-			 CSVParser csvParser = CSVFormat.Builder.create()
-					 .setHeader()                 // The first line is set as Header
-					 .build()
-					 .parse(reader);
-
-			 BufferedWriter writer = Files.newBufferedWriter(Paths.get(transformedGamesCSV.getPath()));
-			 CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.Builder.create()
-					 .setHeader(csvParser.getHeaderMap().keySet().toArray(new String[0]))
-					 .build())) {
-
-			for (CSVRecord record : csvParser) { // Each record is one line
-
-				String date = record.get(2);
-
-				// Formating "Release Date"
-				date = date.replace(' ', '/').replace(",", "");
-				String[] dateFormated = date.split("/");
-				date = convertArrayToString(formatDate(dateFormated));
-
-				//Cloning "games.csv" and changing "Release Date"
-				int numColumns = record.size();
-				String[] row = new String[numColumns];
-
-				for (int column = 0; column < numColumns; column++) {
-					if (column == 2) { // "Release Date" column
-						row[column] = date;
-					} else {
-						row[column] = record.get(column);
-					}
-				}
-
-				// Creating "games_formated_release_data.csv"
-				csvPrinter.printRecord((Object[]) row);
-				System.out.println(Arrays.toString(row));
-				//System.out.println("line: "+ line + "| id: " + id + "| name: " + name + "| date: " + row[2]);
+// 				System.out.println(Arrays.toString(row));
 			}
-
-		} catch (Exception e) {
+		} catch (IOException e) {
 			e.printStackTrace(System.err);
 			System.err.println("Erro ao ler 'games.csv' e/ou ao criar 'games_formated_release_data.csv'");
 		}
@@ -173,8 +132,8 @@ public class Transformations {
 	}
 
 	public static void filtrationLinux() {
-		CSVReader originalCSV = new CSVReader("games_formated_release_data.csv");
-		CSVWriter transformedCSV = new CSVWriter("games_linux.csv");
+		CSVReader originalCSV = new CSVReader("transformations","games_formated_release_data.csv");
+		CSVWriter transformedCSV = new CSVWriter("transformations","games_linux.csv");
 
 		try (Reader reader = Files.newBufferedReader(Paths.get(originalCSV.getPath()));
 			 CSVParser csvParser = CSVFormat.Builder.create()
@@ -188,8 +147,6 @@ public class Transformations {
 					 .build())) {
 
 			for (CSVRecord record : csvParser) { // Each record is one line
-				//for(int count = 0; count<999_999_999; count++) {}
-
 				String linux = record.get(19);
 
 				//Cloning "games_formated_release_data.csv" and removing the ones that don´t support linux
@@ -201,10 +158,9 @@ public class Transformations {
 						row[column] = record.get(column);
 					}
 
-					// Creating "games_formated_release_data.csv"
+					// Creating "games_linux.csv"
 					csvPrinter.printRecord((Object[]) row);
 					System.out.println(Arrays.toString(row));
-					//System.out.println("line: "+ line + "| id: " + id + "| name: " + name + "| date: " + row[2]);
 				}
 			}
 
@@ -212,6 +168,5 @@ public class Transformations {
 			e.printStackTrace(System.out);
 			System.err.println("Erro ao ler 'games_formated_release_data.csv' e/ou ao criar 'games_linux.csv'");
 		}
-	}
 	}
 }
