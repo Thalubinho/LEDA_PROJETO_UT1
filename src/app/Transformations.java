@@ -20,7 +20,7 @@ public class Transformations {
 	
 	public static void transformation1() {
 		CSVReader gamesCSV = new CSVReader("games.csv");
-		CSVWriter transformedGamesCSV = new CSVWriter("games_formated_release_data.csv");
+		CSVWriter transformedGamesCSV = new CSVWriter("transformations","games_formated_release_data.csv");
 		
 		try(Reader reader = Files.newBufferedReader(Paths.get(gamesCSV.getPath()));
 			CSVParser csvParser = CSVFormat.Builder.create()
@@ -41,6 +41,7 @@ public class Transformations {
  				// Formating "Release Date"
  				date = date.replace(' ', '/').replace(",",""); 
  				String[] dateFormated = date.split("/");
+				dateFormated = addDayIfIsMissing(dateFormated);
  				date = convertArrayToString(formatDate(dateFormated));
  				
  				//Cloning "games.csv" and changing "Release Date"
@@ -57,17 +58,15 @@ public class Transformations {
  				
  				// Creating "games_formated_release_data.csv"
  				csvPrinter.printRecord((Object[]) row);
- 				System.out.println(Arrays.toString(row));
- 				//System.out.println("line: "+ line + "| id: " + id + "| name: " + name + "| date: " + row[2]);
-			}
+ 				System.out.println(Arrays.toString(row));			}
 			
 		} catch (Exception e) {
-			e.printStackTrace(System.out);
+			e.printStackTrace(System.err);
 			System.err.println("Erro ao ler 'games.csv' e/ou ao criar 'games_formated_release_data.csv'");
 		}
 	}
 	
-	public static String[] formatDate(String[] date) { 
+	public static String[] formatDate(String[] date) {
 		changeDayWithMonth(date);
 		convertNameMonthToNum(date);
 		convertDayToTwoDigits(date);
@@ -81,7 +80,19 @@ public class Transformations {
 		date[0] = date[1];
 		date[1] = aux;
 	}
-	
+
+	private static String[] addDayIfIsMissing(String[] date) { // MM/AAAA to MM/DD/AAA
+		if(date.length == 2){
+			String[] newDate = new String[3];
+			newDate[0] = date[0];
+			newDate[1] = "01";
+			newDate[2] = date[1];
+
+			return newDate;
+		}
+		return date;
+	}
+
 	public static String convertArrayToString(String[] date) { // ["DD", "MM", "AAAA"] to "DD/MM/AAAA"
 		StringBuilder result = new StringBuilder();
 		
