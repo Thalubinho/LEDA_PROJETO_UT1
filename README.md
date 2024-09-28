@@ -9,4 +9,7 @@
 - baixe o arquivo "games.csv" disponível em: https://www.kaggle.com/datasets/fronkongames/steam-games-dataset
 - Coloque o dataSet dentro do diretório raiz do projeto
 ![alt text](image.png)
-- Contrua o projeto com o Maven 
+- Contrua o projeto com o Maven
+
+# Relatório
+- https://docs.google.com/document/d/16q-OaGMf7eEOaMkMvFxHJvP7SJDJRo0UXDJEnSsY_5k/edit
