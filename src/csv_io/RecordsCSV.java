@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class RecordsCSV{
     private CSVRecord[] records;
@@ -70,6 +71,10 @@ public class RecordsCSV{
 
         return result;
     }
+
+    public static boolean equals(String date1 , String date2) { // DD/MM/AAAA
+            return Objects.equals(date1, date2);
+        }
 
     public void copyCSV(String folderNewCSV,String filenameNewCSV){
         CSVWriter newCSV = new CSVWriter(folderNewCSV,filenameNewCSV);

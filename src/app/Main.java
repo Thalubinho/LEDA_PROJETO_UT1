@@ -27,8 +27,9 @@ public class Main {
 		Transformations.transformation1();
 		Transformations.filtrationLinux();
 
-
-
+		// Sorts
+		Sorts.mergeSortByReleaseDateAverageCase("games_formated_release_data.csv");
+		Sorts.mergeSortByReleaseDateAverageCase("games_release_date_mergeSort_medioCaso");
 
 	}
 }

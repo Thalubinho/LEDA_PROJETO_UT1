@@ -1,13 +1,18 @@
 package algorithms;
 
+import csv_io.RecordsCSV;
+import org.apache.commons.csv.CSVRecord;
+
 public class SelectionSort {
-	private static void selectionSort(int[] array) {
-		int minor, minorIndex;
+	public static void selectionSort(CSVRecord[] array) {
+		int minorIndex;
+		CSVRecord minor;
+
 		for(int unsortedIndex = 0; unsortedIndex < array.length - 1; unsortedIndex++) {
 			minor = array[unsortedIndex];
 			minorIndex = unsortedIndex;
 			for(int index = unsortedIndex; index < array.length; index++) {
-				if(array[index] < minor) {
+				if (!RecordsCSV.compareReleaseDate(minor.get(2),array[index].get(2))) {
 					minor = array[index];
 					minorIndex = index;
 				}				
