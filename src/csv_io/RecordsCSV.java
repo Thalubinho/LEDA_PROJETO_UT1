@@ -2,6 +2,7 @@ package csv_io;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.BufferedWriter;
@@ -13,9 +14,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
 
 public class RecordsCSV{
     private CSVRecord[] records;
+
+    public CSVRecord[] getRecords() {
+        return records;
+    }
 
     public RecordsCSV(String folder, String filenameCSV) { // games_formated_release_data.csv
         CSVReader fileCSV = new CSVReader(folder, filenameCSV);
@@ -63,6 +69,36 @@ public class RecordsCSV{
         }
 
         return result;
+    }
+
+    public void copyCSV(String folderNewCSV,String filenameNewCSV){
+        CSVWriter newCSV = new CSVWriter(folderNewCSV,filenameNewCSV);
+
+        try(BufferedWriter writer = Files.newBufferedWriter(Paths.get(newCSV.getPath()));
+            CSVPrinter csvPrinter = new CSVPrinter(writer,
+                                    CSVFormat.Builder.create()
+                                    .setHeader(getHeadersFromEnum())
+                                    .build())) {
+
+            for (CSVRecord record : this.records) {
+                csvPrinter.printRecord(record);
+            }
+
+            } catch (IOException e) {
+            e.printStackTrace(System.err);
+            System.err.println("Erro ao ler 'games.csv' e/ou ao criar 'games_formated_release_data.csv'");
+        }
+    }
+
+    private static String[] getHeadersFromEnum() {
+        HeaderGamesCSV[] headersEnum = HeaderGamesCSV.values();
+        String[] headers = new String[headersEnum.length];
+
+        for (int i = 0; i < headersEnum.length; i++) {
+            headers[i] = headersEnum[i].name();
+        }
+
+        return headers;
     }
 
     public static void main(String[] args) {

@@ -21,6 +21,8 @@ import csv_io.CSVWriter;
 public class Transformations {
 
 	public static void transformation1() {
+
+		// Extract this later, use CSVCopier instead
 		CSVReader gamesCSV = new CSVReader("games.csv");
 		CSVWriter transformedGamesCSV = new CSVWriter("transformations","games_formated_release_data.csv");
 		
@@ -147,7 +149,7 @@ public class Transformations {
 					 .build())) {
 
 			for (CSVRecord record : csvParser) { // Each record is one line
-				String linux = record.get(19);
+				String linux = record.get(18);
 
 				//Cloning "games_formated_release_data.csv" and removing the ones that don´t support linux
 				if (Objects.equals(linux, "True")) {
@@ -160,7 +162,8 @@ public class Transformations {
 
 					// Creating "games_linux.csv"
 					csvPrinter.printRecord((Object[]) row);
-					System.out.println(Arrays.toString(row));
+					//System.out.println(Arrays.toString(row));
+					System.out.println(linux);
 				}
 			}
 
