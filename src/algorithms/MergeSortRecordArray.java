@@ -7,8 +7,7 @@ public class MergeSortRecordArray {
     // Merges two sub arrays of arr[].
     // First subarray is arr[leftIndex..middleIndex]
     // Second subarray is arr[middleIndex+1..rightIndex]
-    private static void merge(CSVRecord[] arr, int leftIndex, int middleIndex, int rightIndex)
-    {
+    private static void merge(CSVRecord[] arr, int leftIndex, int middleIndex, int rightIndex) {
         // Find sizes of two sub arrays to be merged
         int sizeLeftArray = middleIndex - leftIndex + 1;
         int sizeRightArray = rightIndex - middleIndex;
@@ -58,8 +57,7 @@ public class MergeSortRecordArray {
 
     // Main function that sorts arr[l..r] using
     // merge()
-    public static void sort(CSVRecord[] arr, int l, int r)
-    {
+    public static void sort(CSVRecord[] arr, int l, int r) {
         if (l < r) {
             // Find the middle point
             int m = (l + r) / 2;
@@ -74,8 +72,7 @@ public class MergeSortRecordArray {
     }
 
     // Driver method
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
 
     }
 }

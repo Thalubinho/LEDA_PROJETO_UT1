@@ -24,7 +24,7 @@ public class Transformations {
 
 		// Extract this later, use CSVCopier instead
 		CSVReader gamesCSV = new CSVReader("games.csv");
-		CSVWriter transformedGamesCSV = new CSVWriter("transformations","games_formated_release_data.csv");
+		CSVWriter transformedGamesCSV = new CSVWriter("transformations","games_formated_release_date.csv");
 		
 		try(Reader reader = Files.newBufferedReader(Paths.get(gamesCSV.getPath()));
 			CSVParser csvParser = CSVFormat.Builder.create()
@@ -64,7 +64,7 @@ public class Transformations {
 			}
 		} catch (IOException e) {
 			e.printStackTrace(System.err);
-			System.err.println("Erro ao ler 'games.csv' e/ou ao criar 'games_formated_release_data.csv'");
+			System.err.println("Erro ao ler 'games.csv' e/ou ao criar 'games_formated_release_date.csv'");
 		}
 	}
 
@@ -134,7 +134,7 @@ public class Transformations {
 	}
 
 	public static void filtrationLinux() {
-		CSVReader originalCSV = new CSVReader("transformations","games_formated_release_data.csv");
+		CSVReader originalCSV = new CSVReader("transformations","games_formated_release_date.csv");
 		CSVWriter transformedCSV = new CSVWriter("transformations","games_linux.csv");
 
 		try (Reader reader = Files.newBufferedReader(Paths.get(originalCSV.getPath()));
@@ -163,13 +163,13 @@ public class Transformations {
 					// Creating "games_linux.csv"
 					csvPrinter.printRecord((Object[]) row);
 					//System.out.println(Arrays.toString(row));
-					System.out.println(linux);
+					//System.out.println(linux);
 				}
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace(System.out);
-			System.err.println("Erro ao ler 'games_formated_release_data.csv' e/ou ao criar 'games_linux.csv'");
+			System.err.println("Erro ao ler 'games_formated_release_date.csv' e/ou ao criar 'games_linux.csv'");
 		}
 	}
 }

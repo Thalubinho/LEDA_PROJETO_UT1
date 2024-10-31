@@ -91,7 +91,6 @@ public class RecordsCSV{
 
             } catch (IOException e) {
             e.printStackTrace(System.err);
-            System.err.println("Erro ao ler 'games.csv' e/ou ao criar 'games_formated_release_data.csv'");
         }
     }
 

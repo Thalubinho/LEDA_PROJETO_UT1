@@ -383,7 +383,7 @@ public class Sorts {
 			initialTime = System.nanoTime();
 			initialMemory = runtime.totalMemory() - runtime.freeMemory();
 
-			SelectionSort.selectionSort(recordsCSV.getRecords()););
+			SelectionSort.selectionSort(recordsCSV.getRecords());
 
 			finalMemory = runtime.totalMemory() - runtime.freeMemory();
 			finalTime = System.nanoTime();
@@ -412,7 +412,7 @@ public class Sorts {
 			initialTime = System.nanoTime();
 			initialMemory = runtime.totalMemory() - runtime.freeMemory();
 
-			SelectionSort.selectionSort(recordsCSV.getRecords()););
+			SelectionSort.selectionSort(recordsCSV.getRecords());
 
 			finalMemory = runtime.totalMemory() - runtime.freeMemory();
 			finalTime = System.nanoTime();
@@ -443,7 +443,7 @@ public class Sorts {
 			initialTime = System.nanoTime();
 			initialMemory = runtime.totalMemory() - runtime.freeMemory();
 
-			SelectionSort.selectionSort(recordsCSV.getRecords()););
+			SelectionSort.selectionSort(recordsCSV.getRecords());
 
 			finalMemory = runtime.totalMemory() - runtime.freeMemory();
 			finalTime = System.nanoTime();
