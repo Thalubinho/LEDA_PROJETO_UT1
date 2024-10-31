@@ -20,36 +20,35 @@ import csv_io.CSVWriter;
 
 public class Transformations {
 
-	public static void transformation1() {
-
+	public static void transformationReleaseDate() {
 		// Extract this later, use CSVCopier instead
 		CSVReader gamesCSV = new CSVReader("games.csv");
 		CSVWriter transformedGamesCSV = new CSVWriter("transformations","games_formated_release_date.csv");
-		
+
 		try(Reader reader = Files.newBufferedReader(Paths.get(gamesCSV.getPath()));
 			CSVParser csvParser = CSVFormat.Builder.create()
                        			  .setHeader()				 // The first line is set as Header
                        			  .build()
                        			  .parse(reader);
-					
+
 			BufferedWriter writer = Files.newBufferedWriter(Paths.get(transformedGamesCSV.getPath()));
 			CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.Builder.create()
                     					.setHeader(csvParser.getHeaderMap().keySet().toArray(new String[0]))
                     					.build())) {
-			
+
 			for(CSVRecord record: csvParser) { // Each record is one line
 				String date = record.get(2);  // Each column is a .get(index)
-				 				
+
  				// Formating "Release Date"
- 				date = date.replace(' ', '/').replace(",",""); 
+ 				date = date.replace(' ', '/').replace(",","");
  				String[] dateFormated = date.split("/");
 				dateFormated = addDayIfIsMissing(dateFormated);
  				date = convertArrayToString(formatDate(dateFormated));
- 				
+
  				//Cloning "games.csv" and changing "Release Date"
  				int numColumns = record.size();
  				String[] row = new String[numColumns];
- 				
+
  				for(int column = 0; column < numColumns; column++) {
  					if(column == 2) { // "Release Date" column
  						row[column] = date;
@@ -57,10 +56,10 @@ public class Transformations {
  						row[column] = record.get(column);
  					}
  				}
- 				
+
  				// Creating "games_formated_release_data.csv"
  				csvPrinter.printRecord((Object[]) row);
-// 				System.out.println(Arrays.toString(row));
+				//System.out.println(Arrays.toString(row));
 			}
 		} catch (IOException e) {
 			e.printStackTrace(System.err);
@@ -68,7 +67,7 @@ public class Transformations {
 		}
 	}
 
-	public static String[] formatDate(String[] date) {
+	private static String[] formatDate(String[] date) {
 		changeDayWithMonth(date);
 		convertNameMonthToNum(date);
 		convertDayToTwoDigits(date);
@@ -95,7 +94,7 @@ public class Transformations {
 		return date;
 	}
 
-	public static String convertArrayToString(String[] date) { // ["DD", "MM", "AAAA"] to "DD/MM/AAAA"
+	private static String convertArrayToString(String[] date) { // ["DD", "MM", "AAAA"] to "DD/MM/AAAA"
 		StringBuilder result = new StringBuilder();
 
 		for (int i = 0; i < date.length; i++) {
@@ -109,7 +108,7 @@ public class Transformations {
 		return result.toString();
 	}
 
-	public static void convertNameMonthToNum(String[] date) { //  ["DD", "MM(name)", "AAAA"] -> ["DD", "MM(number)", "AAAA"]
+	private static void convertNameMonthToNum(String[] date) { //  ["DD", "MM(name)", "AAAA"] -> ["DD", "MM(number)", "AAAA"]
 		Map<String, String> months = new HashMap<String, String>(); // Extract this
 		months.put("Jan", "01");
 		months.put("Feb", "02");
@@ -127,13 +126,13 @@ public class Transformations {
 		date[1] = months.get(date[1]);
 	}
 
-	public static void convertDayToTwoDigits(String[] date) { // ["D", "MM", "AAAA"] -> ["DD", "MM", "AAAA"]
+	private static void convertDayToTwoDigits(String[] date) { // ["D", "MM", "AAAA"] -> ["DD", "MM", "AAAA"]
 		if (date[0].length() == 1) {
 			date[0] = "0" + date[0];
 		}
 	}
 
-	public static void filtrationLinux() {
+	public static void transformationLinux() {
 		CSVReader originalCSV = new CSVReader("transformations","games_formated_release_date.csv");
 		CSVWriter transformedCSV = new CSVWriter("transformations","games_linux.csv");
 
@@ -171,5 +170,57 @@ public class Transformations {
 			e.printStackTrace(System.out);
 			System.err.println("Erro ao ler 'games_formated_release_date.csv' e/ou ao criar 'games_linux.csv'");
 		}
+	}
+
+	public static void transformationPortuguese(){
+		// Extract this later, use CSVCopier instead
+		CSVReader gamesCSV = new CSVReader("games.csv");
+		CSVWriter transformedGamesCSV = new CSVWriter("transformations","portuguese_supported_games.csv");
+
+		try(Reader reader = Files.newBufferedReader(Paths.get(gamesCSV.getPath()));
+			CSVParser csvParser = CSVFormat.Builder.create()
+					.setHeader()				 // The first line is set as Header
+					.build()
+					.parse(reader);
+
+			BufferedWriter writer = Files.newBufferedWriter(Paths.get(transformedGamesCSV.getPath()));
+			CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.Builder.create()
+					.setHeader(csvParser.getHeaderMap().keySet().toArray(new String[0]))
+					.build())) {
+
+			for(CSVRecord record: csvParser) { // Each record is one line
+				String languagesSupported = record.get(10);  // Each column is a .get(index)
+
+				// Formating by games that support portuguese
+				if(languagesSupported.contains("Portuguese")){
+
+					//Cloning "games.csv" and changing "Release Date"
+					int numColumns = record.size();
+					String[] row = new String[numColumns];
+
+					for(int column = 0; column < numColumns; column++) {
+						if(column == 2) { // "Release Date" column
+							row[column] = languagesSupported;
+						} else {
+							row[column] = record.get(column);
+						}
+					}
+
+					// Creating "portuguese_supported_games.csv"
+					csvPrinter.printRecord((Object[]) row);
+					//System.out.println(Arrays.toString(row));
+					System.out.println(languagesSupported);
+				}
+
+
+			}
+		} catch (IOException e) {
+			e.printStackTrace(System.err);
+			System.err.println("Erro ao ler 'games.csv' e/ou ao criar 'games_formated_release_date.csv'");
+		}
+	}
+
+	public static void main(String[] args) {
+		transformationPortuguese();
 	}
 }

@@ -23,8 +23,9 @@ public class Main {
 			System.err.println("Error creating folders");
 		}
 
-		Transformations.transformation1();
-		Transformations.filtrationLinux();
+		Transformations.transformationReleaseDate();
+		Transformations.transformationLinux();
+		Transformations.transformationPortuguese();
 
 		// Sorts
 		Sorts.mergeSortByReleaseDateAverageCase("games_formated_release_date.csv");
